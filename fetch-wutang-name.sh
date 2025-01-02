@@ -4,12 +4,12 @@
 # https://www.mess.be/inickgenwuname.php
 # (AKA the Childish Gambino Wu-Tang Name Generator)
 # TODO output a more username-friendly format - no spaces or special chars
-# 
+#
 # This script depends on `curl`, `td` and `pup`
 # Some clever regex could eliminate the need for pup
-# 
+#
 #   brew install pup
-# 
+#
 set -e
 
 name="$@"
@@ -21,8 +21,8 @@ fi
 
 curl -s -X POST \
   https://www.mess.be/inickgenwuname.php \
-  -drealname="$name" \
-  | pup --color 'font font text{}' \
-  | tr -d \\n
+  -drealname="$name" |
+  xmllint --html --xpath "//font[@size='2']/text()" - 2>/dev/null |
+  tr -d \\n
 
-echo 
+echo
