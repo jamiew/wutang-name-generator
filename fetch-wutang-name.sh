@@ -1,28 +1,27 @@
 #!/bin/bash
 # @jamiew 2020-01-27
-# Generate a Wu-Tang name using the "official" name generator
+#
+# generate a Wu-Tang Clan name using the "official" name generator
 # https://www.mess.be/inickgenwuname.php
 # (AKA the Childish Gambino Wu-Tang Name Generator)
-# TODO output a more username-friendly format - no spaces or special chars
 #
-# This script depends on `curl`, `td` and `pup`
-# Some clever regex could eliminate the need for pup
-#
-#   brew install pup
+# this script depends on `curl`, `tr` (builtin) and `xmllint` (part of libxml2)
+# I couldn't get it working reliably with grep or sed, sorry
 #
 set -e
 
+# use first argument as seed value, or generate a random one
 name="$@"
-
 if [ -z "$name" ]; then
-  echo "$0: argument(s) required nawmean?"
-  exit 1
+  name=$(openssl rand -base64 32)
 fi
 
 curl -s -X POST \
-  https://www.mess.be/inickgenwuname.php \
+  http://www.mess.be/inickgenwuname.php \
   -drealname="$name" |
   xmllint --html --xpath "//font[@size='2']/text()" - 2>/dev/null |
-  tr -d \\n
+  tr -d \\n |
+  tr '[:upper:]' '[:lower:]' |
+  tr ' ' '_'
 
 echo
