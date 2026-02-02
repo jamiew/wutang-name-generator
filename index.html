@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wu-Tang Name Generator</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #FFD700;
+      font-family: 'Arial Black', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .title {
+      font-size: clamp(1rem, 4vw, 1.5rem);
+      letter-spacing: 0.3em;
+      margin-bottom: 8vh;
+      opacity: 0.6;
+    }
+    .name {
+      font-size: clamp(2rem, 11vw, 7rem);
+      text-align: center;
+      padding: 20px;
+      min-height: 30vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-shadow: 0 0 20px #FFD700, 0 0 40px #B8860B, 0 0 80px #B8860B;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      to { text-shadow: 0 0 30px #FFD700, 0 0 60px #FFD700, 0 0 100px #B8860B; }
+    }
+    .reveal { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    @keyframes pop {
+      0% { opacity: 0; transform: scale(0.5); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .btn {
+      background: transparent;
+      border: 3px solid #FFD700;
+      color: #FFD700;
+      font-family: inherit;
+      font-size: clamp(1rem, 4vw, 1.3rem);
+      font-weight: bold;
+      letter-spacing: 0.2em;
+      padding: 0.8em 1.5em;
+      margin-top: 8vh;
+      cursor: pointer;
+    }
+    .btn:hover { background: #FFD700; color: #000; }
+    .btn:active { transform: scale(0.95); }
+    .hint { position: fixed; bottom: 20px; font-size: 0.7rem; opacity: 0.3; }
+  </style>
+</head>
+<body>
+  <div class="title">WU-TANG NAME GENERATOR</div>
+  <div class="name" id="name">LOADING...</div>
+  <button class="btn" id="btn">GENERATE</button>
+  <div class="hint">tap anywhere</div>
+
+  <script>
+    let words = null;
+
+    async function load() {
+      const [first, second, prefixes] = await Promise.all([
+        fetch('first-words.txt').then(r => r.text()),
+        fetch('second-words.txt').then(r => r.text()),
+        fetch('prefixes.txt').then(r => r.text())
+      ]);
+      words = {
+        first: first.trim().split('\n').filter(Boolean),
+        second: second.trim().split('\n').filter(Boolean),
+        prefixes: prefixes.trim().split('\n').filter(Boolean)
+      };
+      generate();
+    }
+
+    function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    function generate() {
+      if (!words) return;
+      const roll = Math.random();
+      let name;
+      if (roll < 0.05) {
+        name = `${pick(words.prefixes)} ${pick(words.first)} ${pick(words.second)}`;
+      } else if (roll < 0.12) {
+        name = `${pick(words.prefixes)} ${pick(words.second)}`;
+      } else {
+        name = `${pick(words.first)} ${pick(words.second)}`;
+      }
+      const el = document.getElementById('name');
+      el.textContent = name;
+      el.classList.remove('reveal');
+      el.offsetWidth;
+      el.classList.add('reveal');
+    }
+
+    document.getElementById('btn').addEventListener('click', e => { e.stopPropagation(); generate(); });
+    document.body.addEventListener('click', generate);
+    document.addEventListener('keydown', e => { if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); generate(); } });
+
+    load();
+  </script>
+</body>
+</html>
