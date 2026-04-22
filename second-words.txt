@@ -89,7 +89,6 @@ Hustler
 Infiltrator
 Jackal
 Jockey
-Killa
 Killah
 Knight
 Leader

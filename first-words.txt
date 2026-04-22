@@ -16,7 +16,7 @@ Blindfolded
 Bloved
 Blynd
 Bootleg
-Borgd
+Borged
 Braindead
 Broadband
 Bronze
@@ -46,7 +46,7 @@ Dragon
 Drunken
 Dynamic
 Encrypted
-Eratic
+Erratic
 Eternal
 Exploded
 Fearless
@@ -111,13 +111,13 @@ Nebula
 Neon
 Neural
 Noclip
-Notorius
+Notorious
 Null
 Offline
 OneArmed
 Onlyne
 Orbital
-Overclockd
+Overclocked
 Overwritten
 Parallel
 Permabanned
@@ -176,7 +176,7 @@ Surreal
 Swift
 Synth
 Synthwave
-Telefragd
+Telefragged
 Thunder
 Tiger
 Torrented
@@ -247,7 +247,7 @@ Chaotic
 Dank
 Doomer
 Zoomer
-Ratiod
+Ratioed
 Wildstyle
 AllCity
 Tagged
